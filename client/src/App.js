@@ -15,12 +15,29 @@ const App = () => {
     });
   };
 
+  const deleteNote = (id) => {
+    console.log(id);
+    setNotes((prev) => {
+      return prev.filter((note, index) => {
+        return index !== id;
+      });
+    });
+  };
+
   return (
     <>
       <div>
         <Header />
         {notes.map((note, index) => {
-          return <Note key={index} title={note.title} content={note.content} />;
+          return (
+            <Note
+              key={index}
+              id={index}
+              title={note.title}
+              content={note.content}
+              deleteNote={deleteNote}
+            />
+          );
         })}
         <Create addNote={addNote} />
         <Footer />

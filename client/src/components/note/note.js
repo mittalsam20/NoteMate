@@ -1,5 +1,5 @@
 const Note = (props) => {
-  const { title, content } = props;
+  const { id, title, content, deleteNote } = props;
 
   console.log(title);
 
@@ -8,6 +8,14 @@ const Note = (props) => {
       <div className="note">
         <h1>{title}</h1>
         <p>{content}</p>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            deleteNote(id);
+          }}
+        >
+          DELETE
+        </button>
       </div>
     </>
   );
