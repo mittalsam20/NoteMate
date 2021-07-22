@@ -38,6 +38,10 @@ const Create = (props) => {
           onClick={(e) => {
             e.preventDefault();
             addNote(note);
+            setNote({
+              title: "",
+              content: "",
+            });
           }}
         >
           Add
