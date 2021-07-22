@@ -1,9 +1,13 @@
-const Note = () => {
+const Note = (props) => {
+  const { title, content } = props;
+
+  console.log(title);
+
   return (
     <>
       <div className="note">
-        <h1>Title</h1>
-        <p>content</p>
+        <h1>{title}</h1>
+        <p>{content}</p>
       </div>
     </>
   );
