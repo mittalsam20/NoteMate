@@ -28,6 +28,8 @@ const App = () => {
     <>
       <div>
         <Header />
+        <Create addNote={addNote} />
+
         {notes.map((note, index) => {
           return (
             <Note
@@ -39,7 +41,6 @@ const App = () => {
             />
           );
         })}
-        <Create addNote={addNote} />
         <Footer />
       </div>
     </>

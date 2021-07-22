@@ -1,3 +1,5 @@
+import DeleteIcon from "@material-ui/icons/Delete";
+
 const Note = (props) => {
   const { id, title, content, deleteNote } = props;
 
@@ -14,7 +16,7 @@ const Note = (props) => {
             deleteNote(id);
           }}
         >
-          DELETE
+          <DeleteIcon />
         </button>
       </div>
     </>
