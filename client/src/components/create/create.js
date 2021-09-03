@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 import Zoom from "@material-ui/core/Zoom";
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+const mic = new SpeechRecognition();
+
+mic.continuous = true;
+mic.interimResults = true;
+mic.lang = "en-US";
 
 const Create = (props) => {
   const { addNote } = props;
@@ -18,9 +26,7 @@ const Create = (props) => {
     });
   };
 
-  const expand = () => {
-    setExp(true);
-  };
+
   return (
     <>
       <form className="create-note">
@@ -34,7 +40,7 @@ const Create = (props) => {
           />
         )}
         <textarea
-          onClick={expand}
+          onClick={()=>{setExp(true)})}
           name="content"
           value={note.content}
           onChange={handleChange}
@@ -51,6 +57,7 @@ const Create = (props) => {
                 title: "",
                 content: "",
               });
+              setExp(false);
             }}
           >
             <AddIcon />
@@ -62,3 +69,44 @@ const Create = (props) => {
 };
 
 export default Create;
+
+
+
+
+
+
+
+
+useEffect(() => {
+    handleListen()
+  }, [exp])
+
+  const handleListen = () => {
+    if (exp) {
+      mic.start()
+      mic.onend = () => {
+        console.log('continue..')
+        mic.start()
+      }
+    } else {
+      mic.stop()
+      mic.onend = () => {
+        console.log('Stopped Mic on Click')
+      }
+    }
+    mic.onstart = () => {
+      console.log('Mics on')
+    }
+
+    mic.onresult = event => {
+      const transcript = Array.from(event.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('')
+      console.log(transcript)
+      setNote(transcript)
+      mic.onerror = event => {
+        console.log(event.error)
+      }
+    }
+  }
