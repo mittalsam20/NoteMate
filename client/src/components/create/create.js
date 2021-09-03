@@ -26,6 +26,42 @@ const Create = (props) => {
     });
   };
 
+  useEffect(() => {
+    handleListen();
+    // eslint-disable-next-line
+  }, [exp]);
+
+  const handleListen = () => {
+    if (exp) {
+      mic.start();
+      mic.onend = () => {
+        console.log("continue..");
+        mic.start();
+      };
+    } else {
+      mic.stop();
+      mic.onend = () => {
+        console.log("Stopped Mic on Click");
+      };
+    }
+    mic.onstart = () => {
+      console.log("Mics on");
+    };
+
+    mic.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map((result) => result[0])
+        .map((result) => result.transcript)
+        .join("");
+      console.log(transcript);
+      setNote((prev) => {
+        return { ...prev, content: transcript };
+      });
+      mic.onerror = (event) => {
+        console.log(event.error);
+      };
+    };
+  };
 
   return (
     <>
@@ -40,7 +76,9 @@ const Create = (props) => {
           />
         )}
         <textarea
-          onClick={()=>{setExp(true)})}
+          onClick={() => {
+            setExp(true);
+          }}
           name="content"
           value={note.content}
           onChange={handleChange}
@@ -69,44 +107,3 @@ const Create = (props) => {
 };
 
 export default Create;
-
-
-
-
-
-
-
-
-useEffect(() => {
-    handleListen()
-  }, [exp])
-
-  const handleListen = () => {
-    if (exp) {
-      mic.start()
-      mic.onend = () => {
-        console.log('continue..')
-        mic.start()
-      }
-    } else {
-      mic.stop()
-      mic.onend = () => {
-        console.log('Stopped Mic on Click')
-      }
-    }
-    mic.onstart = () => {
-      console.log('Mics on')
-    }
-
-    mic.onresult = event => {
-      const transcript = Array.from(event.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
-        .join('')
-      console.log(transcript)
-      setNote(transcript)
-      mic.onerror = event => {
-        console.log(event.error)
-      }
-    }
-  }
